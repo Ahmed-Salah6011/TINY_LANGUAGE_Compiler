@@ -59,7 +59,7 @@ class Ui_MainWindow(object):
         self.txt_inp = QtWidgets.QTextEdit(self.centralwidget)
         self.txt_inp.setGeometry(QtCore.QRect(40, 120, 471, 401))
         self.txt_inp.setStyleSheet("font: 15pt;\n""background:white;")
-        self.txt_inp.setObjectName("txt_inp")
+        self.txt_inp.setObjectName("txt_inp")  
         self.txt_out = QtWidgets.QTextEdit(self.centralwidget)
         self.txt_out.setGeometry(QtCore.QRect(560, 120, 381, 401))
         self.txt_out.setStyleSheet("font: 15pt;\n""background:white;")
@@ -96,7 +96,8 @@ class Ui_MainWindow(object):
         self.txt_inp.clear()
         for line in f:
                 self.txt_inp.insertPlainText(line)
-    
+        
+        
     def scan_func(self):
         ####empty the tokens list
         if len(self.tokens) !=0:
@@ -114,7 +115,16 @@ class Ui_MainWindow(object):
         comment_reg= r'{.*}'
 
         regex=[comment_reg,assign_reg,op_reg,com_reg,special_sym,num_reg,reserved_reg,id_reg]
-        regex_names=["comment","assign","operator","compare","symbol","number","reserved word","identifier"]
+        #regex_names=["comment","assign","operator","compare","symbol","number","reserved word","identifier"]
+        regex_dict={"comment" : "COMMENT" ,
+        "assign" :[(":=","ASSIGN")] ,
+        "operator" : [("+","PLUS") , ("-","MINUS") , ("*","MUL") , ("/" , "DIV")],
+        "compare" :[("<","LESSTHAN") , (">","GREATERTHAN")] ,
+        "symbol" : [("(","OPENBRACKET") , (")","CLOSEDBRACKET") , (";","SEMICOLON") , ("=","EQUAL")],
+        "number" : "NUMBER",
+        "reserved word" : [("if","IF") , ("then","THEN") , ("else","ELSE") , ("end","END") , ("repeat","REPEAT") , ("until","UNTIL") , ("read","READ") , ("write","WRITE")],
+        "identifier" : "IDENTIFIER",
+        }
 
         total_reg= r'(%s|%s|%s|%s|%s|%s|%s|%s)' %(assign_reg,op_reg,com_reg,special_sym,comment_reg,num_reg,id_reg,reserved_reg)
 
@@ -128,14 +138,22 @@ class Ui_MainWindow(object):
         for line in text:
                 t=re.findall(total_reg,line)
                 for token in t:
-                        for reg,name in zip(regex,regex_names):
+                        for reg,name in zip(regex,regex_dict.keys()):
                                 j=re.findall(reg,token)
                                 if len(j)==0: continue
                                 if j[0] == token:
-                                        final.append((token,name))
+                                        if name == "identifier" or name == "number" or name == "comment":
+                                                final.append((token,regex_dict[name]))
+                                        # elif name == "comment" :
+                                        #         break
+                                        else :
+                                                for x in regex_dict[name]:
+                                                        if token == x[0] :
+                                                                final.append((token,x[1])) 
+                                        #final.append((token,name))
                                         break
-                
-                self.tokens.append(list(final))
+                if len(final) != 0 :
+                        self.tokens.append(list(final))
                 final.clear()
 
         ############################
