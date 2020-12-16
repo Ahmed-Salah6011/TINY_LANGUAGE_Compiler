@@ -16,7 +16,7 @@ import os
 class Ui_MainWindow(object):
     def __init__(self):
             self.tokens=list()
-            self.path=None
+            self.path=os.path.dirname(os.path.realpath(__file__))
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1007, 728)
@@ -93,8 +93,8 @@ class Ui_MainWindow(object):
 
     def get_text(self):
         file_path = filedialog.askopenfile().buffer.name
-        ind=file_path.rfind('/')
-        self.path=file_path[:ind]
+        # ind=file_path.rfind('/')
+        # self.path=file_path[:ind]
         f = open(file_path,'r')
         self.txt_inp.clear()
         for line in f:
