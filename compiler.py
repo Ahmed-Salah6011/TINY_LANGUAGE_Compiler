@@ -11,11 +11,12 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from tkinter import filedialog
 import re
-
+import os
 
 class Ui_MainWindow(object):
     def __init__(self):
             self.tokens=list()
+            self.path=None
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1007, 728)
@@ -92,6 +93,8 @@ class Ui_MainWindow(object):
 
     def get_text(self):
         file_path = filedialog.askopenfile().buffer.name
+        ind=file_path.rfind('/')
+        self.path=file_path[:ind]
         f = open(file_path,'r')
         self.txt_inp.clear()
         for line in f:
@@ -159,11 +162,14 @@ class Ui_MainWindow(object):
         ############################
 
         ###print the output
+        # print(self.tokens)
+        ff= open(os.path.join(self.path,"out.txt") , 'w')
         for i in range(len(self.tokens)):
                 self.txt_out.append("Line #{}".format(i+1))
                 t_line = self.tokens[i]
                 for t in t_line:
                         self.txt_out.append("{} , {}".format(t[0],t[1]))
+                        ff.write("{} , {}\n".format(t[0],t[1]))
                 self.txt_out.append("")
 
 
