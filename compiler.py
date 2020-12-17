@@ -119,10 +119,10 @@ class Ui_MainWindow(object):
 
         regex=[comment_reg,assign_reg,op_reg,com_reg,special_sym,num_reg,reserved_reg,id_reg]
         #regex_names=["comment","assign","operator","compare","symbol","number","reserved word","identifier"]
-        regex_dict={"comment" : "COMMENT" ,
+        regex_dict={"comment" : None ,
         "assign" :[(":=","ASSIGN")] ,
         "operator" : [("+","PLUS") , ("-","MINUS") , ("*","MUL") , ("/" , "DIV")],
-        "compare" :[("<","LESSTHAN") , (">","GREATERTHAN")] ,
+        "compare" :[("<","LESSTHAN") , (">","GREATERTHAN")],
         "symbol" : [("(","OPENBRACKET") , (")","CLOSEDBRACKET") , (";","SEMICOLON") , ("=","EQUAL")],
         "number" : "NUMBER",
         "reserved word" : [("if","IF") , ("then","THEN") , ("else","ELSE") , ("end","END") , ("repeat","REPEAT") , ("until","UNTIL") , ("read","READ") , ("write","WRITE")],
@@ -145,10 +145,10 @@ class Ui_MainWindow(object):
                                 j=re.findall(reg,token)
                                 if len(j)==0: continue
                                 if j[0] == token:
-                                        if name == "identifier" or name == "number" or name == "comment":
+                                        if name == "identifier" or name == "number":
                                                 final.append((token,regex_dict[name]))
-                                        # elif name == "comment" :
-                                        #         break
+                                        elif name == "comment" :
+                                                break
                                         else :
                                                 for x in regex_dict[name]:
                                                         if token == x[0] :
