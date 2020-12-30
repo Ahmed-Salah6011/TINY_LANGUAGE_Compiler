@@ -339,6 +339,9 @@ class Ui_MainWindow(object):
                 self.program()
         except ValueError as e:
                 messagebox.showerror("Error",e)
+        
+        except:
+                messagebox.showerror("Error","Syntax Error!")
 
         if(self.good_flag==1):
                 lines = self.txt_inp.toPlainText().lower().splitlines()
