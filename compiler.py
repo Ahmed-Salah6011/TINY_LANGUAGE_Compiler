@@ -117,12 +117,16 @@ class Ui_MainWindow(object):
         return
   
     def match(self,str):
+        try:
+                if self.tokens[self.row][1] == str:
+                        self.advance_input()
+                        self.Error = 0
+                else:
+                        self.Error = 1
+                        raise ValueError("Missing {}".format(str))
+        except:
+                raise ValueError("Missing {}".format(str))
 
-        if self.tokens[self.row][1] == str:
-                self.advance_input()
-                self.Error = 0
-        else:
-                self.Error = 1
 
     def mul_op(self):
         if self.tokens[self.row][0] == '*':
@@ -170,10 +174,10 @@ class Ui_MainWindow(object):
     
     def stmt_seq(self):
         self.statement()
+        if self.row == (len(self.tokens)):
+                return
         while self.tokens[self.row][0] == ";":
                 self.advance_input()
-                if self.row > (len(self.tokens) - 1): ### to solve appearing error problem
-                        break
                 self.statement()
                 if self.row > (len(self.tokens) - 1):
                         break
@@ -297,6 +301,7 @@ class Ui_MainWindow(object):
                 self.write_stmt()
         else:
                 self.Error = 1
+                raise ValueError("Error, Unknown Statement!")
 
     def repeat_stmt(self):
         self.match("REPEAT")
@@ -324,7 +329,7 @@ class Ui_MainWindow(object):
     
     def program(self):
         self.stmt_seq()
-        if self.Error == 0:
+        if self.Error == 0 and self.row == len(self.tokens):
                 self.good_flag=1
                 messagebox.showinfo("Info","Grammar is Good")
 

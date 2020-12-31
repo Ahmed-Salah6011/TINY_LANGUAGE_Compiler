@@ -1,3 +1,9 @@
-read , READ
+if , IF
 x , IDENTIFIER
-; , SEMICOLON
+< , LESSTHAN
+0 , NUMBER
+then , THEN
+x , IDENTIFIER
+:= , ASSIGN
+5 , NUMBER
+end , END
