@@ -172,6 +172,8 @@ class Ui_MainWindow(object):
         self.statement()
         while self.tokens[self.row][0] == ";":
                 self.advance_input()
+                if self.row > (len(self.tokens) - 1): ### to solve appearing error problem
+                        break
                 self.statement()
                 if self.row > (len(self.tokens) - 1):
                         break
