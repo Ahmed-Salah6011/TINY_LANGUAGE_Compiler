@@ -102,11 +102,15 @@ class Ui_MainWindow(object):
                 file_path = filedialog.askopenfile().buffer.name
                 # ind=file_path.rfind('/')
                 # self.path=file_path[:ind]
+                if not file_path.endswith(".txt"):
+                        raise ValueError("You Must Choose a TXT File Only!")
                 f = open(file_path,'r')
                 self.lines=f.readlines()
                 self.txt_inp.clear()
                 for line in self.lines:
                         self.txt_inp.insertPlainText(line)
+        except ValueError as e:
+                messagebox.showerror("Error",e)
         except:
                 messagebox.showerror("Error","Error in Text file")
         
