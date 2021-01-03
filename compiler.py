@@ -269,6 +269,7 @@ class Ui_MainWindow(object):
         self.match("THEN")
         self.stmt_seq()
         if self.tokens[self.row][0] == "else":
+                self.match("ELSE")
                 self.stmt_seq()
         self.match("END")
 
@@ -303,6 +304,8 @@ class Ui_MainWindow(object):
                 self.read_stmt()
         elif self.tokens[self.row][1] == "WRITE":
                 self.write_stmt()
+        # elif self.tokens[self.row][1] == "ELSE":
+        #         self.if_stmt()
         else:
                 self.Error = 1
                 raise ValueError("Error, Unknown Statement!")
